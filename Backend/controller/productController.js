@@ -12,6 +12,7 @@ exports.createProduct = asyncHandler(async (req, res) => {
 
 exports.getAllProducts = asyncHandler(async (req, res) => {
   const products = await Product.find();
+  console.log("GET ALL PRODUCTS HIT");
 
   res.status(200).json({
     success: true,

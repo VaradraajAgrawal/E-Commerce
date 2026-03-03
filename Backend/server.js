@@ -9,7 +9,6 @@ const notFound = require("./middleware/notFound");
 const cartRoutes = require("./routes/cartRoute");
 const orderRoute = require("./routes/orderRoute");
 const app = express();
-connectDB();
 
 app.use(cors());
 app.use(express.json());
@@ -21,7 +20,13 @@ app.use("/order", orderRoute);
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+const startServer = async () => {
+  await connectDB();
+  const PORT = 8000;
+
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+};
+
+startServer();

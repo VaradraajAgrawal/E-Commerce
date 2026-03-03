@@ -21,7 +21,7 @@ const Register = () => {
       setFormData({ ...formData, password: "", confirmPassword: "" });
       return;
     }
-    const res = await fetch("http://localhost:5000/practise", {
+    const res = await fetch("http://localhost:8000/practise", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify(formData),

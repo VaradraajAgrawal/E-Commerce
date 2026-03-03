@@ -1,6 +1,4 @@
 import { useState } from "react";
-import Navbar from "../components/Navbar";
-import CartSideBar from "../components/cartSideBar";
 import { useCart } from "../context/CartProvider";
 import { useEffect } from "react";
 const HomePage = () => {
@@ -9,12 +7,18 @@ const HomePage = () => {
 
   useEffect(() => {
     const loadProduct = async () => {
-      const res = await fetch("http://localhost:5000/api/products");
-      if (!res.ok) {
-        throw Error("Something went Wrong!!");
+      try {
+        const res = await fetch("http://localhost:8000/api/products");
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch products");
+        }
+
+        const newdata = await res.json();
+        setProducts(newdata.data || []);
+      } catch (error) {
+        console.error("Fetch Error:", error);
       }
-      const newdata = await res.json();
-      setProducts(newdata.data);
     };
 
     loadProduct();
@@ -39,13 +43,13 @@ const HomePage = () => {
               className="bg-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow  text-black border-0 p-2 rounded-2xl"
             >
               <img
-                src={product.img}
-                alt={product.name}
+                src={product.image}
+                alt={product.title}
                 className="w-full h-48 border-0 object-cover rounded-2xl"
               />
               <div className="p-4">
                 <h3 className="text-lg font-semibold text-black">
-                  {product.name}
+                  {product.title}
                 </h3>
                 <p className="text-blue-600 font-bold mt-1">${product.price}</p>
                 <button
