@@ -11,12 +11,19 @@ exports.createProduct = asyncHandler(async (req, res) => {
 });
 
 exports.getAllProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find();
-  console.log("GET ALL PRODUCTS HIT");
-
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 8;
+  const skip = (page - 1) * limit;
+  const total = await Product.countDocuments();
+  const products = await Product.find().skip(skip).limit(limit);
   res.status(200).json({
     success: true,
     count: products.length,
+    pagination: {
+      total,
+      page,
+      pages: Math.ceil(total / limit),
+    },
     data: products,
   });
 });
